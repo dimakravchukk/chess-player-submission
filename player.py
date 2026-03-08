@@ -282,7 +282,8 @@ class TransformerPlayer(Player):
         if not os.path.exists(path):
             path = os.path.join(os.path.dirname(__file__), self.MODEL_PATH)
         if not os.path.exists(path):
-            raise FileNotFoundError(f"Checkpoint not found: {self.MODEL_PATH}")
+            from huggingface_hub import hf_hub_download
+            path = hf_hub_download(repo_id="dkrav/chess-sv-transformer", filename="chess_sv_best.pt")
         ckpt = torch.load(path, map_location=self.device, weights_only=False)
         cfg  = ckpt.get("config", {})
         model = ChessSVTransformer(

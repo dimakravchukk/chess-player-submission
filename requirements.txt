@@ -1,2 +1,5 @@
 torch
 chess
+transformers
+requests
+huggingface_hub
