@@ -22,7 +22,10 @@ import chess
 import torch
 import torch.nn as nn
 
-from chess_tournament.players import Player as _BasePlayer
+try:
+    from chess_tournament.players import Player as _BasePlayer
+except ImportError:
+    _BasePlayer = None
 
 
 # ── Tokenizer ────────────────────────────────────────────────────────────────
@@ -329,6 +332,8 @@ class TransformerPlayer(Player):
         self.model = self._load_model()
         self.model.eval()
         self._losing_streak = 0  # consecutive moves where we're clearly losing
+        self.debug = False
+        self._stats = {"book": 0, "mate1": 0, "free_cap": 0, "king_filter": 0, "draw_filtered": 0, "sv_pick": 0}
 
     def reset_history(self):
         self._losing_streak = 0
